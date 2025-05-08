@@ -1,0 +1,14 @@
+<ul id="feed"></ul>
+
+<script>
+    const ws = new WebSocket("ws://localhost:8080");
+    const feed = document.getElementById("feed");
+
+    ws.onmessage = ({ data }) => {
+        const { symbol, price, timestamp } = JSON.parse(data);
+        const li = document.createElement("li");
+        li.textContent = `${new Date(timestamp).toLocaleString()}: ${symbol}: $${price}`;
+        feed.prepend(li);
+        if (feed.children.length > 20) feed.removeChild(feed.lastChild);
+    };
+</script>
